@@ -7,9 +7,18 @@ const port = 8000;
 app.use(express.json());
 app.use("/api/user", userRoute);
 
-app.get("/about", (req, res) => {
-  res.send("<h1>Hello, this is about tab<h1>");
-});
+app.post(
+  "/sign-in",
+  (req, res, next) => {
+    const { email, password } = req.body;
+    if (!email || !password)
+      return res.json({ error: "email/password is missing" });
+    next();
+  },
+  (req, res) => {
+    res.send("<h1>Hello, this is about tab<h1>");
+  }
+);
 
 app.listen(port, () => {
   console.log("Listening on port 8000");
