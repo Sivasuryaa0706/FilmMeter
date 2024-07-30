@@ -6,9 +6,9 @@ exports.create = async (req, res) => {
   //Preventing duplicate users
   const oldUser = await User.findOne({ email });
   if (oldUser)
-    return res.status(401).json({ error: "This mail is already in use" });
+    return res.status(401).json({ error: "This mail is already in use" }); //Unauthorized status code
 
   const newUser = new User({ name, email, password });
   await newUser.save();
-  res.json({ user: newUser });
+  res.status(201).json({ user: newUser }); //Created status code
 };
