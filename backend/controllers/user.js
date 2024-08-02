@@ -15,16 +15,16 @@ exports.create = async (req, res) => {
   const newUser = new User({ name, email, password });
 
   // Generate 6 digit OTP
-  let otp = "";
+  let OTP = "";
   for (let i = 0; i < 6; i++) {
     const randomVal = Math.round(Math.random() * 9);
-    otp += randomVal;
+    OTP += randomVal;
   }
 
   // Store OTP in DB
   const newEmailVerificationToken = new emailVerificationToken({
     owner: newUser._id,
-    token: otp,
+    token: OTP,
   });
   await newEmailVerificationToken.save();
 
@@ -44,7 +44,7 @@ exports.create = async (req, res) => {
     subject: "Email Verification",
     html: `
         <p>Your Verification OTP</p>
-        <h1>${otp}</h1>
+        <h1>${OTP}</h1>
       `,
   });
 
@@ -58,7 +58,7 @@ exports.create = async (req, res) => {
 };
 
 exports.verifyEmail = async (req, res) => {
-  const { userId, otp } = req.body;
+  const { userId, OTP } = req.body;
 
   if (!isValidObjectId(userId)) return res.json({ error: "Invalid User" });
 
@@ -69,4 +69,32 @@ exports.verifyEmail = async (req, res) => {
 
   const token = await emailVerificationToken.findOne({ owner: userId });
   if (!token) return res.json({ error: "Token not found!" });
+
+  // Comparing OTP with database
+  const isMatched = await token.compareToken(OTP);
+  if (!isMatched) return res.json({ error: "Please submit a valid OTP" });
+  user.isVerified = true;
+  await user.save();
+  await emailVerificationToken.findByIdAndDelete(token._id); //After verify, delete OTP form db
+
+  //Send Welcome email to user
+  var transport = nodemailer.createTransport({
+    host: "sandbox.smtp.mailtrap.io",
+    port: 2525,
+    auth: {
+      user: "80d9dae8252e8f",
+      pass: "a5d8fb929682fd",
+    },
+  });
+
+  await transport.sendMail({
+    from: "verification@reviewapp.com",
+    to: user.email,
+    subject: "Verification successful ✅",
+    html: `
+        <h1>Your email has been verified successfully! 🎉</h1><br>
+        <h3><b><em>🙏 Thanks for choosing us! 😊</em></b></h3>
+      `,
+  });
+  res.json({ message: "Your email is verified" });
 };

@@ -33,6 +33,12 @@ emailVerificationTokenSchema.pre("save", async function (next) {
   next();
 });
 
+// Method to compare Hashed OTP(stored in db), Email verification token(send through email)
+emailVerificationTokenSchema.methods.compareToken = async function (token) {
+  const result = await bcrypt.compare(token, this.token);
+  return result;
+};
+
 module.exports = mongoose.model(
   "EmailVerficationToken",
   emailVerificationTokenSchema
