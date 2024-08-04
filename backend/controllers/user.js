@@ -1,5 +1,6 @@
 const { isValidObjectId } = require("mongoose");
 const emailVerificationToken = require("../../models/emailVerificationToken");
+const passwordResetToken = require("../../models/passwordResetToken");
 const User = require("../../models/user");
 const nodemailer = require("nodemailer");
 const { generateOTP, generateMailTransporter } = require("../utils/mail");
@@ -121,4 +122,20 @@ exports.resendEmailVerificationToken = async (req, res) => {
       `,
   });
   res.json({ message: "New OTP has been sent to your registered email id" });
+};
+
+//For resetting password
+exports.forgetPassword = async (req, res) => {
+  const { email } = req.body;
+  if (!email) return sendError(res, "Email is missing!");
+
+  const user = await User.findOne({ email });
+  if (!user) return sendError(res, "User not found!", 404);
+
+  const alreadyHasToken = await passwordResetToken.findOne({ owner: user._id });
+  if (alreadyHasToken)
+    return sendError(
+      res,
+      "Only after one hour you can request for another token!"
+    );
 };
