@@ -2,9 +2,9 @@ const { isValidObjectId } = require("mongoose");
 const emailVerificationToken = require("../../models/emailVerificationToken");
 const passwordResetToken = require("../../models/passwordResetToken");
 const User = require("../../models/user");
-const nodemailer = require("nodemailer");
+const crypto = require("crypto");
 const { generateOTP, generateMailTransporter } = require("../utils/mail");
-const { sendError } = require("../utils/helper");
+const { sendError, generateRandomBytes } = require("../utils/helper");
 
 exports.create = async (req, res) => {
   const { name, email, password } = req.body;
@@ -138,4 +138,26 @@ exports.forgetPassword = async (req, res) => {
       res,
       "Only after one hour you can request for another token!"
     );
+
+  // Sending password reset link
+  const token = await generateRandomBytes();
+  const newPasswordResetToken = await passwordResetToken({
+    owner: user._id,
+    token,
+  });
+  await newPasswordResetToken.save();
+
+  const resetPasswordUrl = `http://localhost:3000/reset-password?token=${token}&id=${user._id}`; //React app
+
+  var transport = generateMailTransporter();
+  await transport.sendMail({
+    from: "security@reviewapp.com",
+    to: user.email,
+    subject: "Reset Password link",
+    html: `
+        <p>Click here to reset password</p>
+        <a href='${resetPasswordUrl}'>Reset Password</a>
+      `,
+  });
+  res.json({ message: "Link sent to your email" });
 };
