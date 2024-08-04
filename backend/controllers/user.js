@@ -1,7 +1,7 @@
 const { isValidObjectId } = require("mongoose");
-const emailVerificationToken = require("../../models/emailVerificationToken");
-const passwordResetToken = require("../../models/passwordResetToken");
-const User = require("../../models/user");
+const emailVerificationToken = require("../models/emailVerificationToken");
+const passwordResetToken = require("../models/passwordResetToken");
+const User = require("../models/user");
 const crypto = require("crypto");
 const { generateOTP, generateMailTransporter } = require("../utils/mail");
 const { sendError, generateRandomBytes } = require("../utils/helper");
