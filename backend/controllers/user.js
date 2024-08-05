@@ -1,8 +1,8 @@
+const jwt = require("jsonwebtoken");
 const { isValidObjectId } = require("mongoose");
 const emailVerificationToken = require("../models/emailVerificationToken");
 const passwordResetToken = require("../models/passwordResetToken");
 const User = require("../models/user");
-const crypto = require("crypto");
 const { generateOTP, generateMailTransporter } = require("../utils/mail");
 const { sendError, generateRandomBytes } = require("../utils/helper");
 
@@ -196,4 +196,18 @@ exports.resetPassword = async (req, res) => {
     message:
       "Password Reset Successfull, now you can use new password to login",
   });
+};
+
+exports.signIn = async (req, res) => {
+  const { email, password } = req.body;
+
+  const user = await User.findOne({ email });
+  if (!user) return sendError(res, "Email/ Password mismatch");
+
+  const matched = await user.comparePassword(password);
+  if (!matched) return sendError(res, "Email/ Password mismatch");
+
+  const { _id, name } = user;
+  const jwtToken = jwt.sign({ userId: _id }, "fsifjinlksmdmdoa98dzs8");
+  res.json({ user: { id: _id, name, email, token: jwtToken } });
 };
