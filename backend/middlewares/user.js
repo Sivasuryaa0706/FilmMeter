@@ -8,7 +8,8 @@ exports.isValidPasswordResetToken = async (req, res, next) => {
     return sendError(res, "Invalid Request");
 
   const resetToken = await passwordResetToken.findOne({ owner: userId });
-  if (!resetToken) return sendError(res, "Invalid Request!");
+  if (!resetToken)
+    return sendError(res, "Unauthorized Access, Invalid Request!");
 
   const matched = await resetToken.compareToken(token);
   if (!matched) return sendError(res, "Unauthorized Access, Invalid Request!");
