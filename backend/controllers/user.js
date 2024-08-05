@@ -208,6 +208,6 @@ exports.signIn = async (req, res) => {
   if (!matched) return sendError(res, "Email/ Password mismatch");
 
   const { _id, name } = user;
-  const jwtToken = jwt.sign({ userId: _id }, "fsifjinlksmdmdoa98dzs8");
+  const jwtToken = jwt.sign({ userId: _id }, process.env.JWT_SECRET);
   res.json({ user: { id: _id, name, email, token: jwtToken } });
 };
