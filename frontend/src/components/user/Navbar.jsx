@@ -1,10 +1,11 @@
 import React from "react";
 import { IoIosSunny } from "react-icons/io";
+import Container from "../Container";
 
 export default function Navbar() {
   return (
-    <div className="bg-secondary">
-      <div className="max-w-screen-xl mx-auto p-1">
+    <div className="bg-secondary shadow-sm shadow-gray-500">
+      <Container>
         <div className="flex justify-between items-center">
           <img
             src="./logo-dark.png"
@@ -30,7 +31,7 @@ export default function Navbar() {
             <li className="text-white font-semibold text-lg">Login</li>
           </ul>
         </div>
-      </div>
+      </Container>
     </div>
   );
 }
