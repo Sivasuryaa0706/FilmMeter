@@ -2,8 +2,10 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { IoIosSunny } from "react-icons/io";
 import Container from "../Container";
+import { useTheme } from "../../hooks/ThemeHook";
 
 export default function Navbar() {
+  const { toggleTheme } = useTheme();
   return (
     <div className="bg-secondary shadow-sm shadow-gray-500">
       <Container>
@@ -18,7 +20,10 @@ export default function Navbar() {
           </Link>
           <ul className="flex items-center space-x-4">
             <li>
-              <button className="bg-dark-subtle p-1 rounded">
+              <button
+                onClick={toggleTheme}
+                className="bg-dark-subtle p-1 rounded"
+              >
                 <IoIosSunny className="text-secondary" size={24} />
               </button>
             </li>

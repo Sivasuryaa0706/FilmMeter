@@ -3,14 +3,13 @@ import Container from "../Container";
 import Title from "../form/Title";
 import FormInput from "../form/FormInput";
 import Submit from "../form/Submit";
-import { Link } from "react-router-dom";
 import CustomLink from "../CustomLink";
 
 export default function Signin() {
   return (
-    <div className="fixed inset-0 bg-primary -z-10 flex justify-center items-center">
+    <div className="fixed inset-0 dark:bg-primary -z-10 flex justify-center items-center">
       <Container>
-        <form className="bg-secondary rounded p-6 space-y-6">
+        <form className="dark:bg-secondary rounded p-6 space-y-6">
           <Title>Sign In</Title>
           <FormInput
             label="Email"
