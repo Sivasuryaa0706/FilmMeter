@@ -6,13 +6,15 @@ export default function FormInput({ name, placeholder, label, ...rest }) {
       <input
         id={name}
         name={name}
-        className="bg-transparent rounded border-2 border-dark-subtle
-              text-lg w-full outline-none focus:border-white p-1 text-white peer transition"
+        className="bg-transparent rounded border-2 dark:border-dark-subtle border-light-subtle
+              text-lg w-full outline-none dark:focus:border-white p-1 focus:border-primary dark:text-white peer transition
+              "
         placeholder={placeholder}
         {...rest}
       />
       <label
-        className="font-semibold text-dark-subtle peer-focus:text-white self-start"
+        className="font-semibold dark:text-dark-subtle text-light-subtle dark:peer-focus:text-white 
+        self-start peer-focus:text-primary "
         htmlFor={name}
       >
         {label}

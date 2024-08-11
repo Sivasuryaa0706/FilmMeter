@@ -3,7 +3,11 @@ import { Link } from "react-router-dom";
 
 export default function CustomLink({ to, children }) {
   return (
-    <Link className="text-dark-subtle hover:text-white" to={to}>
+    <Link
+      className="dark:text-dark-subtle text-secondary 
+      dark:hover:text-white hover:text-primary"
+      to={to}
+    >
       {children}
     </Link>
   );
