@@ -6,6 +6,7 @@ import Submit from "../form/Submit";
 import CustomLink from "../CustomLink";
 import { commonModalClasses } from "../../utils/Theme";
 import FormContainer from "../form/FormContainer";
+import { createUser } from "../../api/auth";
 
 const validateUserInfo = ({ name, email, password }) => {
   const isValidName = /^[a-z A-Z]+$/;
@@ -38,11 +39,15 @@ export default function Signup() {
     setUserInfo({ ...userInfo, [name]: value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const { ok, error } = validateUserInfo(userInfo);
     if (!ok) return console.log(error);
-    console.log(userInfo);
+
+    const response = await createUser(userInfo);
+    if (response.error) return console.log(response.error);
+    return console.log(response.user);
+    // await createUser(userInfo); //Sending info to backend using axiom.
   };
 
   return (
