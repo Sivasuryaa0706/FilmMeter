@@ -45,7 +45,7 @@ exports.create = async (req, res) => {
 
   res.status(201).json({
     user: {
-      id: newUser_.id,
+      id: newUser._id,
       name: newUser.name,
       email: newUser.email,
     },

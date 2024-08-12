@@ -1,11 +1,14 @@
 const express = require("express");
 const morgan = require("morgan");
+const cors = require("cors");
 require("express-async-errors");
 require("dotenv").config({ path: "../.env" });
 require("./db");
 const userRoute = require("./routes/user");
 const { errorHandler } = require("./middlewares/error");
+
 const app = express();
+app.use(cors());
 const port = 8000;
 
 app.use(express.json());
