@@ -7,6 +7,17 @@ import FormContainer from "../form/FormContainer";
 import { commonModalClasses } from "../../utils/Theme";
 
 const OTP_LENGTH = 6;
+const isValidOTP = (otp) => {
+  let valid = false;
+
+  for (let val of otp) {
+    //All 6 must be integer
+    valid = !isNaN(parseInt(val));
+    if (!valid) break;
+  }
+
+  return valid;
+};
 
 export default function EmailVerification() {
   const [otp, setOtp] = useState(new Array(OTP_LENGTH).fill(""));
@@ -46,7 +57,10 @@ export default function EmailVerification() {
   const handleSubmit = (e) => {
     e.preventDefault();
 
+    if (!isValidOTP(otp)) return console.log("Invalid OTP!");
+
     //Submit Otp
+    console.log(otp);
   };
   useEffect(() => {
     inputRef.current?.focus();
@@ -83,7 +97,7 @@ export default function EmailVerification() {
               );
             })}
           </div>
-          <Submit value="Send Link" />
+          <Submit value="Verify Account" />
         </form>
       </Container>
     </FormContainer>
