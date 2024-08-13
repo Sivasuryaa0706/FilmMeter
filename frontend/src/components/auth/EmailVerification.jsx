@@ -5,6 +5,7 @@ import Title from "../form/Title";
 import Submit from "../form/Submit";
 import FormContainer from "../form/FormContainer";
 import { commonModalClasses } from "../../utils/Theme";
+import { verifyUserEmail } from "../../api/auth";
 
 const OTP_LENGTH = 6;
 const isValidOTP = (otp) => {
@@ -54,13 +55,17 @@ export default function EmailVerification() {
     if (key == "Backspace") focusPreviousInputField(index);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-
     if (!isValidOTP(otp)) return console.log("Invalid OTP!");
 
     //Submit Otp
-    console.log(otp);
+    const { error, message } = await verifyUserEmail({
+      OTP: otp.join(""),
+      userId: user.id,
+    });
+    if (error) return console.log(error);
+    console.log(message);
   };
   useEffect(() => {
     inputRef.current?.focus();

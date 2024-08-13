@@ -17,6 +17,7 @@ export const verifyUserEmail = async (userInfo) => {
     const { data } = await client.post("/user/verify-email", userInfo);
     return data;
   } catch (error) {
+    console.log(error.response?.data);
     const { response } = error; // We need to send error from sendError() => res.json
     if (response?.data) return response.data;
 
