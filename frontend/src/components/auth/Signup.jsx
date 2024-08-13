@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { replace, useNavigate } from "react-router-dom";
 import Container from "../Container";
 import Title from "../form/Title";
 import FormInput from "../form/FormInput";
@@ -32,6 +33,8 @@ export default function Signup() {
     password: "",
   });
 
+  const navigate = useNavigate();
+
   const { name, email, password } = userInfo;
 
   const handleChange = ({ target }) => {
@@ -46,8 +49,11 @@ export default function Signup() {
 
     const response = await createUser(userInfo);
     if (response.error) return console.log(response.error);
-    return console.log(response.user);
-    // await createUser(userInfo); //Sending info to backend using axiom.
+    navigate("/auth/verification", {
+      state: { user: response.user },
+      replace: true, //Cannot go to previous screen
+    });
+    console.log(response.user);
   };
 
   return (
