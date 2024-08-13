@@ -43,6 +43,11 @@ export default function EmailVerification() {
     if (key == "Backspace") focusPreviousInputField(index);
   };
 
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    //Submit Otp
+  };
   useEffect(() => {
     inputRef.current?.focus();
   }, [activeOtpIndex]);
@@ -55,7 +60,7 @@ export default function EmailVerification() {
   return (
     <FormContainer>
       <Container>
-        <form className={commonModalClasses}>
+        <form onSubmit={handleSubmit} className={commonModalClasses}>
           <div>
             <Title>Please Enter the OTP to verify your account</Title>
             <p className="text-center dark:text-dark-subtle text-secondary">
