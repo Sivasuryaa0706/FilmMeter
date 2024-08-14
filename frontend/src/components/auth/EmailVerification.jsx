@@ -6,6 +6,7 @@ import Submit from "../form/Submit";
 import FormContainer from "../form/FormContainer";
 import { commonModalClasses } from "../../utils/Theme";
 import { verifyUserEmail } from "../../api/auth";
+import { useNotification } from "../../hooks";
 
 const OTP_LENGTH = 6;
 const isValidOTP = (otp) => {
@@ -25,6 +26,7 @@ export default function EmailVerification() {
   const [activeOtpIndex, setActiveOtpIndex] = useState(0);
 
   const inputRef = useRef();
+  const { updateNotification } = useNotification();
 
   const { state } = useLocation();
   const user = state?.user;
@@ -57,15 +59,15 @@ export default function EmailVerification() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!isValidOTP(otp)) return console.log("Invalid OTP!");
+    if (!isValidOTP(otp)) return updateNotification("error", "Invalid OTP!");
 
     //Submit Otp
     const { error, message } = await verifyUserEmail({
       OTP: otp.join(""),
       userId: user.id,
     });
-    if (error) return console.log(error);
-    console.log(message);
+    if (error) return updateNotification("error", error);
+    updateNotification("success", message);
   };
   useEffect(() => {
     inputRef.current?.focus();

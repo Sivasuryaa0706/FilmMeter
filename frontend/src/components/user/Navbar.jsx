@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { IoIosSunny } from "react-icons/io";
 import Container from "../Container";
-import { useTheme } from "../../hooks/ThemeHook";
+import { useTheme } from "../../hooks";
 
 export default function Navbar() {
   const { toggleTheme } = useTheme();

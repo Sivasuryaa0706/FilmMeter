@@ -8,6 +8,7 @@ import CustomLink from "../CustomLink";
 import { commonModalClasses } from "../../utils/Theme";
 import FormContainer from "../form/FormContainer";
 import { createUser } from "../../api/auth";
+import { useNotification } from "../../hooks";
 
 const validateUserInfo = ({ name, email, password }) => {
   const isValidName = /^[a-z A-Z]+$/;
@@ -35,6 +36,8 @@ export default function Signup() {
 
   const navigate = useNavigate();
 
+  const { updateNotification } = useNotification();
+
   const { name, email, password } = userInfo;
 
   const handleChange = ({ target }) => {
@@ -45,7 +48,7 @@ export default function Signup() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const { ok, error } = validateUserInfo(userInfo);
-    if (!ok) return console.log(error);
+    if (!ok) return updateNotification("error", error);
 
     const response = await createUser(userInfo);
     if (response.error) return console.log(response.error);

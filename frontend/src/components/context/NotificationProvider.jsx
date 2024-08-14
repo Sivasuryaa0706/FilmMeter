@@ -1,18 +1,49 @@
-import React, { createContext } from "react";
+import React, { createContext, useState } from "react";
 
-const NotificationContext = createContext();
+export const NotificationContext = createContext();
+
+let timeoutId;
 export default function NotificationProvider({ children }) {
-  const updateNotification = () => {};
+  const [notification, setNotification] = useState("");
+  const [classes, setClasses] = useState("");
+
+  const updateNotification = (type, value) => {
+    if (timeoutId) clearTimeout(timeoutId);
+
+    switch (type) {
+      case "error":
+        setClasses("bg-red-500");
+        break;
+      case "success":
+        setClasses("bg-green-500");
+        break;
+      case "warning":
+        setClasses("bg-orange-500");
+        break;
+      default:
+        setClasses("bg-red-500");
+    }
+
+    setNotification(value); //Passing the error value to component
+
+    timeoutId = setTimeout(() => {
+      //Disappears after 3sec
+      setNotification("");
+    }, 3000);
+  };
+
   return (
     <NotificationContext.Provider value={{ updateNotification }}>
       {children}
-      <div className="fixed left-1/2 -translate-x-1/2 top-24 rounded">
-        <div className=" shadow-md bg-red-400 shadow-gray-400 bounce-custom">
-          <p className="text-white px-4 py-2 font-semibold">
-            Something went Wrong!
-          </p>
+      {notification && (
+        <div className="fixed left-1/2 -translate-x-1/2 top-24 rounded">
+          <div className=" shadow-md  shadow-gray-400 bounce-custom">
+            <p className={classes + " text-white px-4 py-2 font-semibold"}>
+              {notification}
+            </p>
+          </div>
         </div>
-      </div>
+      )}
     </NotificationContext.Provider>
   );
 }
