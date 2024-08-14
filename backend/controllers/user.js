@@ -84,7 +84,11 @@ exports.verifyEmail = async (req, res) => {
         <h3><b><em>🙏 Thanks for choosing us! 😊</em></b></h3>
       `,
   });
-  res.json({ message: "Your email is verified" });
+  const jwtToken = jwt.sign({ userId: user._id }, process.env.JWT_SECRET);
+  res.json({
+    user: { id: user._id, name: user.name, email: user.email, token: jwtToken },
+    message: "Your email is verified",
+  });
 };
 
 //After 1hr, token will be reset.
