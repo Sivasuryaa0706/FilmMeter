@@ -81,7 +81,7 @@ exports.verifyEmail = async (req, res) => {
     subject: "Verification successful ✅",
     html: `
         <h1>Your email has been verified successfully! 🎉</h1><br>
-        <h3><b><em>🙏 Thanks for choosing us! 😊</em></b></h3>
+        <h3><b><em>Thanks for choosing us! 😊</em></b></h3>
       `,
   });
   const jwtToken = jwt.sign({ userId: user._id }, process.env.JWT_SECRET);
