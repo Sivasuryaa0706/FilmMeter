@@ -1,4 +1,5 @@
 const express = require("express");
+const jwt = require("jsonwebtoken");
 const {
   create,
   verifyEmail,
@@ -15,6 +16,9 @@ const {
   signInValidator,
 } = require("../middlewares/validator");
 const { isValidPasswordResetToken } = require("../middlewares/user");
+const { sendError } = require("../utils/helper");
+const user = require("../models/user");
+const { isAuth } = require("../middlewares/auth");
 const router = express.Router();
 
 //Post -> safe, get-> not safe.  Always think from front-end.
@@ -36,4 +40,9 @@ router.post(
   resetPassword
 );
 
+//To get to know if the user is authenticated
+router.get("/is-auth", isAuth, (req, res) => {
+  const { user } = req;
+  res.json({ user: { id: user._id, name: user.name, email: user.email } });
+});
 module.exports = router;
