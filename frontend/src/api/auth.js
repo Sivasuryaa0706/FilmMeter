@@ -37,3 +37,21 @@ export const signInUser = async (userInfo) => {
     return { error: error.message || error }; // If no error data, return error message.
   }
 };
+
+export const getIsAuth = async (token) => {
+  try {
+    const { data } = await client.get("/user/is-auth", {
+      headers: {
+        Authorization: "Bearer " + token,
+        Accept: "application/json",
+      },
+    });
+    return data;
+  } catch (error) {
+    console.log(error.response?.data);
+    const { response } = error; // We need to send error from sendError() => res.json
+    if (response?.data) return response.data;
+
+    return { error: error.message || error }; // If no error data, return error message.
+  }
+};
