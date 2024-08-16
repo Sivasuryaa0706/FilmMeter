@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { replace, useNavigate } from "react-router-dom";
 import Container from "../Container";
 import Title from "../form/Title";
@@ -8,7 +8,7 @@ import CustomLink from "../CustomLink";
 import { commonModalClasses } from "../../utils/Theme";
 import FormContainer from "../form/FormContainer";
 import { createUser } from "../../api/auth";
-import { useNotification } from "../../hooks";
+import { useAuth, useNotification } from "../../hooks";
 
 const validateUserInfo = ({ name, email, password }) => {
   const isValidName = /^[a-z A-Z]+$/;
@@ -38,6 +38,9 @@ export default function Signup() {
 
   const { updateNotification } = useNotification();
 
+  const { authInfo } = useAuth();
+  const { isLoggedIn } = authInfo;
+
   const { name, email, password } = userInfo;
 
   const handleChange = ({ target }) => {
@@ -58,6 +61,11 @@ export default function Signup() {
     });
     console.log(response.user);
   };
+
+  useEffect(() => {
+    //we want to move our user to somewhere else
+    if (isLoggedIn) navigate("/");
+  }, [isLoggedIn]);
 
   return (
     <FormContainer>
