@@ -83,3 +83,15 @@ export const verifyPasswordResetToken = async (token, userId) => {
     return { error: error.message || error }; // If no error data, return error message.
   }
 };
+export const resetPassword = async (passwordInfo) => {
+  try {
+    const { data } = await client.post("/user/reset-password", passwordInfo);
+    return data;
+  } catch (error) {
+    console.log(error.response?.data);
+    const { response } = error; // We need to send error from sendError() => res.json
+    if (response?.data) return response.data;
+
+    return { error: error.message || error }; // If no error data, return error message.
+  }
+};

@@ -7,7 +7,7 @@ import Submit from "../form/Submit";
 import FormContainer from "../form/FormContainer";
 import { commonModalClasses } from "../../utils/Theme";
 import { ImSpinner3 } from "react-icons/im";
-import { verifyPasswordResetToken } from "../../api/auth";
+import { resetPassword, verifyPasswordResetToken } from "../../api/auth";
 import { useNotification } from "../../hooks";
 
 export default function ConfirmPassword() {
@@ -60,14 +60,26 @@ export default function ConfirmPassword() {
     setPassword({ ...password, [name]: value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+
     if (password.one.trim().length < 8)
       return updateNotification("error", "Password must be 8 characters long!");
     if (!password.one.trim())
       return updateNotification("error", "Password is missing!");
     if (password.one != password.two)
       return updateNotification("error", "Passwords do not match!");
+
+    const { error, message } = await resetPassword({
+      newPassword: password.one,
+      userId: id,
+      token,
+    });
+
+    if (error) return updateNotification("error", error);
+
+    updateNotification("success", message);
+    navigate("/auth/signin", { replace: true });
   };
 
   if (isVerifying)
