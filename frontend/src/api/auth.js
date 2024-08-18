@@ -68,3 +68,18 @@ export const forgetPassword = async (email) => {
     return { error: error.message || error }; // If no error data, return error message.
   }
 };
+export const verifyPasswordResetToken = async (token, userId) => {
+  try {
+    const { data } = await client.post("/user/verify-pass-reset-token", {
+      token,
+      userId,
+    });
+    return data;
+  } catch (error) {
+    console.log(error.response?.data);
+    const { response } = error; // We need to send error from sendError() => res.json
+    if (response?.data) return response.data;
+
+    return { error: error.message || error }; // If no error data, return error message.
+  }
+};

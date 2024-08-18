@@ -1,4 +1,5 @@
 import React from "react";
+import { useSearchParams } from "react-router-dom";
 import Container from "../Container";
 import Title from "../form/Title";
 import FormInput from "../form/FormInput";
@@ -7,6 +8,12 @@ import FormContainer from "../form/FormContainer";
 import { commonModalClasses } from "../../utils/Theme";
 
 export default function ConfirmPassword() {
+  const [searchParams] = useSearchParams();
+  const token = searchParams.get("token");
+  const id = searchParams.get("id");
+
+  //isTokenValid, isVerifying, !isValid
+
   return (
     <FormContainer>
       <Container>
