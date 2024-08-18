@@ -154,7 +154,7 @@ exports.forgetPassword = async (req, res) => {
   });
   await newPasswordResetToken.save();
 
-  const resetPasswordUrl = `http://localhost:3000/reset-password?token=${token}&id=${user._id}`; //React app
+  const resetPasswordUrl = `http://localhost:5173/reset-password?token=${token}&id=${user._id}`; //React app
 
   const transport = generateMailTransporter();
   await transport.sendMail({
