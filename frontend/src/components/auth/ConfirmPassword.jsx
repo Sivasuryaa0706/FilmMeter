@@ -11,6 +11,10 @@ import { verifyPasswordResetToken } from "../../api/auth";
 import { useNotification } from "../../hooks";
 
 export default function ConfirmPassword() {
+  const [password, setPassword] = useState({
+    one: "",
+    two: "",
+  });
   const [isVerifying, setIsVerifying] = useState(true);
   const [isValid, setIsValid] = useState(false);
 
@@ -51,6 +55,21 @@ export default function ConfirmPassword() {
       </FormContainer>
     );
 
+  const handleChange = ({ target }) => {
+    const { name, value } = target;
+    setPassword({ ...password, [name]: value });
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (password.one.trim().length < 8)
+      return updateNotification("error", "Password must be 8 characters long!");
+    if (!password.one.trim())
+      return updateNotification("error", "Password is missing!");
+    if (password.one != password.two)
+      return updateNotification("error", "Passwords do not match!");
+  };
+
   if (isVerifying)
     return (
       <FormContainer>
@@ -68,18 +87,22 @@ export default function ConfirmPassword() {
   return (
     <FormContainer>
       <Container>
-        <form className={commonModalClasses}>
+        <form onSubmit={handleSubmit} className={commonModalClasses}>
           <Title>Enter New Password</Title>
           <FormInput
+            value={password.one}
+            onChange={handleChange}
             label="New Password"
             placeholder="********"
-            name="password"
+            name="one"
             type="password"
           ></FormInput>
           <FormInput
+            value={password.two}
+            onChange={handleChange}
             label="Confirm Password"
             placeholder="********"
-            name="confirmPassword"
+            name="two"
             type="password"
           ></FormInput>
           <Submit value="Confirm Password" />
