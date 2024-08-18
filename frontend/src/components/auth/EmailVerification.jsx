@@ -5,7 +5,7 @@ import Title from "../form/Title";
 import Submit from "../form/Submit";
 import FormContainer from "../form/FormContainer";
 import { commonModalClasses } from "../../utils/Theme";
-import { verifyUserEmail } from "../../api/auth";
+import { resendEmailVerificationToken, verifyUserEmail } from "../../api/auth";
 import { useAuth, useNotification } from "../../hooks";
 
 const OTP_LENGTH = 6;
@@ -27,7 +27,7 @@ export default function EmailVerification() {
 
   const { isAuth, authInfo } = useAuth();
   const { isLoggedIn, profile } = authInfo;
-  const { isVerified } = profile?.isVerified;
+  const isVerified = profile?.isVerified;
 
   const inputRef = useRef();
   const { updateNotification } = useNotification();
@@ -55,6 +55,12 @@ export default function EmailVerification() {
     if (!value) focusPreviousInputField(index);
     else focusNextInputField(index);
     setOtp([...newOtp]);
+  };
+
+  const handleOTPResend = async () => {
+    const { error, message } = await resendEmailVerificationToken(user.id);
+    if (error) return updateNotification("error", error);
+    updateNotification("success", message);
   };
 
   const handleKeyDown = ({ key }, index) => {
@@ -88,7 +94,7 @@ export default function EmailVerification() {
   useEffect(() => {
     if (!user) navigate("/not-found");
     if (isLoggedIn && isVerified) navigate("/");
-  }, [user, isLoggedIn]);
+  }, [user, isLoggedIn, isVerified]);
 
   return (
     <FormContainer>
@@ -116,7 +122,16 @@ export default function EmailVerification() {
               );
             })}
           </div>
-          <Submit value="Verify Account" />
+          <div>
+            <Submit value="Verify Account" />
+            <button
+              onClick={handleOTPResend}
+              type="button"
+              className="dark:text-white text-blue-500 font-semibold hover:underline mt-2"
+            >
+              I don't have OTP
+            </button>
+          </div>
         </form>
       </Container>
     </FormContainer>
