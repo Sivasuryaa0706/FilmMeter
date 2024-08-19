@@ -6,12 +6,12 @@ const actorSchema = new mongoose.Schema(
       type: String,
       trim: true,
       required: true,
+      unique: true,
     },
     about: {
       type: String,
       trim: true,
       required: true,
-      unique: true,
     },
     gender: {
       type: String,
