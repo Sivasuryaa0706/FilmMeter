@@ -4,9 +4,12 @@ const cors = require("cors");
 require("express-async-errors");
 require("dotenv").config({ path: "../.env" });
 require("./db");
-const userRoute = require("./routes/user");
 const { errorHandler } = require("./middlewares/error");
 const { handleNotFound } = require("./utils/helper");
+
+//Routers
+const userRoute = require("./routes/user");
+const actorRoute = require("./routes/actor");
 
 const app = express();
 app.use(cors());
@@ -14,7 +17,9 @@ const port = 8000;
 
 app.use(express.json());
 app.use(morgan("dev"));
+
 app.use("/api/user", userRoute);
+app.use("/api/actor", actorRoute);
 app.use("/*", handleNotFound);
 
 //Async Await Error Handling using express-async-errors
