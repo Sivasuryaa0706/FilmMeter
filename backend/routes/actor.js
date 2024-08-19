@@ -1,13 +1,23 @@
 const express = require("express");
-const { createActor } = require("../controllers/actor");
+const { createActor, updateActor } = require("../controllers/actor");
 const { uploadImage } = require("../middlewares/multer");
-const { actorInfoValidator } = require("../middlewares/validator");
+const { actorInfoValidator, validate } = require("../middlewares/validator");
 const router = express.Router();
 
 router.post(
   "/create",
   uploadImage.single("avatar"),
   actorInfoValidator,
+  validate,
   createActor
 );
+
+router.post(
+  "/update/:actorId", //id is dynamic endpoint
+  uploadImage.single("avatar"),
+  actorInfoValidator,
+  validate,
+  updateActor
+);
+
 module.exports = router;
