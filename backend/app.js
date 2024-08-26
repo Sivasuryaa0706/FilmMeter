@@ -10,6 +10,7 @@ const { handleNotFound } = require("./utils/helper");
 //Routers
 const userRoute = require("./routes/user");
 const actorRoute = require("./routes/actor");
+const movieRoute = require("./routes/movie");
 
 const app = express();
 app.use(cors());
@@ -20,6 +21,7 @@ app.use(morgan("dev"));
 
 app.use("/api/user", userRoute);
 app.use("/api/actor", actorRoute);
+app.use("/api/movie", movieRoute);
 app.use("/*", handleNotFound);
 
 //Async Await Error Handling using express-async-errors
