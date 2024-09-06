@@ -6,8 +6,8 @@ const router = express.Router();
 
 router.post(
   "/upload-trailer",
-  isAdmin,
   isAuth,
+  isAdmin,
   uploadVideo.single("video"),
   uploadTrailer
 );
