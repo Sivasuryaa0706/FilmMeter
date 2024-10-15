@@ -108,10 +108,10 @@ exports.validateMovie = [
         const publicId = arr[arr.length - 1].split(".")[0];
 
         if (public_id !== publicId) throw Error("Trailer public_id is invalid");
+        return true;
       } catch (error) {
         throw Error("Trailer URL is invalid");
       }
-      return true;
     }),
 
   check("poster").custom((_, { req }) => {
