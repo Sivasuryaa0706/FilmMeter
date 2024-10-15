@@ -1,0 +1,15 @@
+const movieInfo = {
+  title: "Maharaja",
+  storyLine: "story line",
+  director: "Director name",
+  releaseDate: "07-06-2024",
+  status: "private",
+  type: "movie",
+  genres: ["Drama", "Action"],
+  tags: ["action", "movie", "kollywood"],
+  cast: [{ id: "kf345sd32", roleAs: "Sethupathi", leadActor: true }],
+  writers: ["3546425f", "74563g"],
+  poster: file,
+  trailer: { url: "https://", public_id: "egfdgg789" },
+  language: "Tamil",
+};
