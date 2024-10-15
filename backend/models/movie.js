@@ -56,6 +56,7 @@ const movieSchema = new mongoose.Schema(
       type: Object,
       url: { type: String, required: true },
       profile_id: { type: String, required: true },
+      responsive: [URL],
       required: true,
     },
     trailer: {

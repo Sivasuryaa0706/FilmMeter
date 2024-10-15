@@ -84,7 +84,7 @@ exports.validateMovie = [
     .withMessage("Cast must be an array of strings!")
     .custom((cast) => {
       for (let c of cast) {
-        if (!isValidObjectId(c.id)) throw Error("Invalid Cast id inside");
+        if (!isValidObjectId(c.actor)) throw Error("Invalid Cast id inside");
         if (!c.roleAs?.trim()) throw Error("RoleAs is missing inside cast!");
         if (typeof c.leadActor !== "boolean")
           throw Error(
@@ -94,7 +94,7 @@ exports.validateMovie = [
       return true;
     }),
 
-  check("trailerInfo")
+  check("trailer")
     .isObject()
     .withMessage("Trailer Info must be an aboject with url and public_id")
     .custom(({ url, public_id }) => {
